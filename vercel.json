@@ -5,9 +5,6 @@
       "source": "/api/dados",
       "destination": "/api/server.js"
     },
-    {
-      "source": "/salvar",
-      "destination": "/api/server.js"
-    }
+    
   ]
 }
