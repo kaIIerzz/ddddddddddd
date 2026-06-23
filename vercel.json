@@ -2,7 +2,11 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/api/(.*)",
+      "source": "/api/dados",
+      "destination": "/api/server.js"
+    },
+    {
+      "source": "/salvar",
       "destination": "/api/server.js"
     }
   ]
