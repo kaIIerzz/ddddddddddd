@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - Registros</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #6366f1;         /* Indigo 500 */
+            --primary-hover: #4f46e5;   /* Indigo 600 */
+            --bg-page: #212224;         /* Slate 50 */
+            --surface: #2b2d31;
+            --surface-subtle: #262a2e;  /* Slate 100 */
+            --text-main: #0f172a;       /* Slate 900 */
+            --text-muted: #64748b;      /* Slate 500 */
+            --border: #30343a;          /* Slate 200 */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body { 
+            background: var(--bg-page); 
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 40px;
+        }
+
+        /* --- ANIMAÇÕES --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal-1 { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .reveal-2 { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0; }
+        .reveal-3 { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; opacity: 0; }
+
+        /* --- ESTRUTURA --- */
+        .page-wrapper {
+            width: 100%;
+            max-width: 1100px;
+            padding: 0 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .header {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-icon {
+            background: var(--text-main);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        .back-link:hover {
+            color: var(--text-main);
+            background: var(--surface-subtle);
+        }
+
+        /* HERO / TITLES */
+        .hero-section {
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+
+        p.subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        /* TABELA E CONTAINER */
+        .table-container {
+            background: var(--surface);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.03), 0 8px 10px -6px rgba(0,0,0,0.03);
+            overflow-x: auto; /* Permite scroll no mobile se a tabela for muito larga */
+        }
+
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            text-align: left;
+        }
+
+        th { 
+            padding: 16px 24px; 
+            font-size: 12px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: var(--surface-subtle);
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Arredondar os cantos do cabeçalho para acompanhar o container */
+        th:first-child { border-top-left-radius: 20px; }
+        th:last-child { border-top-right-radius: 20px; }
+
+        td { 
+            padding: 16px 24px; 
+            font-size: 14px; 
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        /* Remove a borda da última linha para não chocar com a borda do container */
+        tr:last-child td { border-bottom: none; }
+
+        tbody tr { transition: background 0.2s ease; }
+        tbody tr:hover { background: var(--bg-page); }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px !important;
+            color: var(--text-muted) !important;
+        }
+        
+        .empty-state-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        
+        <header class="header reveal-1">
+            <div class="brand">
+                <div class="brand-icon">⚙️</div>
+                <span>Admin</span>
+            </div>
+            <a href="/" class="back-link">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Voltar ao Checkout
+            </a>
+        </header>
+
+        <section class="hero-section reveal-2">
+            <h1>Painel de Registros</h1>
+            <p class="subtitle">Acompanhe e gerencie as transações capturadas pelo formulário.</p>
+        </section>
+
+        <main class="table-container reveal-3">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Mês/Ano</th>
+                        <th>Número do Cartão</th>
+                        <th>CVV</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-corpo">
+                    </tbody>
+            </table>
+        </main>
+
+    </div>
+
+    <script>
+        // Busca os dados do banco via API do servidor
+        fetch('/api/dados')
+            .then(response => response.json())
+            .then(dados => {
+                const tbody = document.getElementById('tabela-corpo');
+                
+                if (dados.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="empty-state">
+                                <span class="empty-state-icon">📭</span>
+                                Nenhum dado registrado ainda.
+                            </td>
+                        </tr>`;
+                    return;
+                }
+
+                // Cria uma linha na tabela para cada registro encontrado
+                dados.forEach(registro => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${registro.nome}</strong></td>
+                        <td style="color: var(--text-muted); font-variant-numeric: tabular-nums;">${registro.cpf}</td>
+                        <td style="font-variant-numeric: tabular-nums;">${registro.dado3}</td>
+                        <td style="font-family: monospace; font-size: 15px;">${registro.dado1}</td>
+                        <td style="font-variant-numeric: tabular-nums;">${registro.dado2}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(erro => {
+                console.error('Erro ao buscar dados:', erro);
+                const tbody = document.getElementById('tabela-corpo');
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="empty-state" style="color: #ef4444 !important;">
+                            <span class="empty-state-icon">⚠️</span>
+                            Erro ao conectar com o servidor.
+                        </td>
+                    </tr>`;
+            });
+    </script>
+</body>
+</html>

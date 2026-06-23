@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produto Esgotado</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #6366f1;         /* Indigo 500 */
+            --primary-hover: #4f46e5;   /* Indigo 600 */
+            --bg-page: #f8fafc;         /* Slate 50 */
+            --surface: #ffffff;
+            --surface-subtle: #f1f5f9;  /* Slate 100 */
+            --text-main: #0f172a;       /* Slate 900 */
+            --text-muted: #64748b;      /* Slate 500 */
+            --border: #e2e8f0;          /* Slate 200 */
+            --warning: #f59e0b;         /* Amber 500 */
+            --warning-light: #fef3c7;   /* Amber 100 */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body { 
+            background: var(--bg-page); 
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- ANIMAÇÕES --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .reveal-1 { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .reveal-2 { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0; }
+        .reveal-3 { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; opacity: 0; }
+
+        /* --- ESTRUTURA --- */
+        .page-wrapper {
+            width: 100%;
+            max-width: 1100px;
+            padding: 0 24px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        /* HEADER */
+        .header {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 60px;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-icon {
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* CARD DE AVISO (CENTRALIZADO) */
+        .message-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            padding-bottom: 100px;
+        }
+
+        .status-card {
+            background: var(--surface);
+            padding: 48px 40px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.03), 0 8px 10px -6px rgba(0,0,0,0.03);
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ÍCONE DE ALERTA/CAIXA VAZIA */
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: var(--warning-light);
+            color: var(--warning);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 24px;
+            animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+            opacity: 0;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        p {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 32px;
+        }
+
+        /* BOTÃO SECUNDÁRIO E PRIMÁRIO */
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 12px 20px -3px rgba(99, 102, 241, 0.35);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-subtle);
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 600px) {
+            .status-card { padding: 40px 24px; }
+            .header { margin-bottom: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        
+        <header class="header reveal-1">
+            <div class="brand">
+                <div class="brand-icon">✓</div>
+                <span>Checkout</span>
+            </div>
+        </header>
+
+        <main class="message-container">
+            <div class="status-card reveal-2">
+                
+                <div class="icon-wrapper">
+                    <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <path d="M3.27 6.96L12 12.01l8.73-5.05"></path>
+                        <path d="M12 22.08V12"></path>
+                        <path d="M9 15l2 2 4-4" stroke="currentColor" style="display: none;"></path>
+                        <line x1="8" y1="8" x2="16" y2="16" stroke="currentColor" stroke-width="2"></line>
+                        <line x1="16" y1="8" x2="8" y2="16" stroke="currentColor" stroke-width="2"></line>
+                    </svg>
+                </div>
+
+                <h1 class="reveal-3">Poxa, estamos sem estoque!</h1>
+                <p class="reveal-3">O produto que você tentou comprar esgotou nos últimos instantes. <strong>Nenhum valor foi cobrado do seu cartão.</strong></p>
+
+                <div class="actions reveal-3">
+                    <a href="/" class="btn btn-primary">Tentar novamente</a>
+                    <a href="#" class="btn btn-secondary">Voltar para a Loja</a>
+                </div>
+
+            </div>
+        </main>
+
+    </div>
+
+</body>
+</html>
